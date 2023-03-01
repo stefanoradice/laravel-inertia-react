@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active'
     ];
 
     /**
@@ -41,4 +42,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    public function isAdmin()
+    {
+        if ($this->role->name == 'Administrator' && $this->is_active == true) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isActive()
+    {
+        return $this->is_active ? true : false;
+    }
 }

@@ -5,6 +5,7 @@ import { PostForm } from './Partials/PostForm';
 import PostTable from './Partials/PostTable';
 
 const index = ({ auth, ...props }) => {
+
   return (
     <AuthenticatedLayout
       auth={auth}
