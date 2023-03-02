@@ -15,8 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(1);
-        return Inertia::render('Posts/Index', ['posts' => $posts]);
+        return Inertia::render('Posts/Index');
     }
 
     /**

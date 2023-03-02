@@ -24,9 +24,18 @@ export default function Authenticated({ auth, header, children }) {
                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                   Dashboard
                 </NavLink>
-                <NavLink href={route('users.index')} active={route().current('users.*')}>
-                  Users
-                </NavLink>
+                {
+                  auth.roles.includes('Administrator') &&
+                  <>
+                    <NavLink href={route('permissions.index')} method="get" active={route().current('permissions.*')}>
+                      Permissions
+                    </NavLink>
+                    <NavLink href={route('users.index')} active={route().current('users.*')}>
+                      Users
+                    </NavLink>
+                  </>
+                }
+
                 <NavLink href={route('posts.index')} active={route().current('posts.*')}>
                   Posts
                 </NavLink>

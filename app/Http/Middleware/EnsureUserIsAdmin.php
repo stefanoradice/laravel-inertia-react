@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserIsValid
+class EnsureUserIsAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class EnsureUserIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->is_active) {
+        if (in_array('Administrator', Auth::user()->roles->pluck('name')->toArray())) {
             return $next($request);
         }
 
-        return redirect('/');
+        return abort(403);
     }
 }

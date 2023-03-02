@@ -1,25 +1,24 @@
 import Pagination from '@/Components/Pagination'
 import React, { useEffect, useState } from 'react'
 
-const PostTable = (props) => {
+const PermissionTable = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
   const [count, setCount] = useState(0);
-  const [posts, setPosts] = useState([]);
+  const [permissions, setPermissions] = useState([]);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState(1);
 
   useEffect(() => {
     (async (pagination) => {
-      const url = `/api/v1/posts?page=${pagination}`;
+      const url = `/api/v1/permissions?page=${pagination}`;
       setIsError(false);
       setIsLoading(true);
       try {
-        const api = await fetch(url);
-        const response = await api.json();
-        setData(response);
-        setPosts(response.data);
+        const response = await axios.get(url);
+        setData(response.data);
+        setPermissions(response.data.data);
         setCount(response.data.length);
       } catch (err) {
         setIsError(true);
@@ -27,24 +26,24 @@ const PostTable = (props) => {
       }
       setIsLoading(false);
     })(pagination);
-  }, [pagination])
+  }, [pagination]);
 
+  useEffect(() => {
+    console.log(permissions)
+  }, []);
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {!isLoading && isError ? (
-        <div className='dark:text-white'>No posts error</div>
+        <div className='dark:text-white'>No permissions error</div>
       ) : !isLoading && !isError ? (
         <>
-          {posts.length ?
+          {permissions.length ?
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Post name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Category
+                    Permission name
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -53,16 +52,13 @@ const PostTable = (props) => {
               </thead>
               <tbody>
                 {
-                  posts.map((post) => {
-                    return <tr key={post.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  permissions.map((permission) => {
+                    return <tr key={permission.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {post.title}
+                        {permission.name}
                       </th>
                       <td className="px-6 py-4">
-                        {post.description}
-                      </td>
-                      <td className="px-6 py-4">
-                        <a href={route('posts.edit', post)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <a href={route('posts.edit', permission)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                       </td>
                     </tr>
                   })
@@ -88,4 +84,4 @@ const PostTable = (props) => {
   )
 }
 
-export default PostTable
+export default PermissionTable

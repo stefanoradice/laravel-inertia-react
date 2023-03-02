@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Resources\PermissionResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
+use App\Models\Permission;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,10 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('posts', function () {
-        return PostResource::collection(Post::latest()->paginate(10));
+    Route::get('posts', function ($paginate = 10) {
+        return PostResource::collection(Post::latest()->paginate(Request::get('paginate') ?: $paginate));
     });
-    Route::get('users', function () {
-        return UserResource::collection(User::latest()->paginate(10));
+    Route::get('users', function ($paginate = 10) {
+        return UserResource::collection(User::latest()->paginate(Request::get('paginate') ?: $paginate));
+    });
+    Route::get('permissions', function ($paginate = 10) {
+        return PermissionResource::collection(Permission::latest()->paginate(Request::get('paginate') ?: $paginate));
     });
 });

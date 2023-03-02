@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -32,14 +33,15 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'user.verified'])->group(function () {
+Route::middleware(['auth', 'user.admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/users', UserController::class);
 
-    Route::resource('/posts', PostController::class);
+    Route::resource('/posts', PostController::class)->withoutMiddleware('user.admin');
 });
+Route::resource('/permissions', PermissionController::class);
 
 require __DIR__ . '/auth.php';

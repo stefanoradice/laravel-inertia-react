@@ -2,8 +2,6 @@ import Pagination from '@/Components/Pagination'
 import React, { useEffect, useState } from 'react'
 
 const PostTable = (props) => {
-  //const users = props.users.data;
-  const links = props.users.links;
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
