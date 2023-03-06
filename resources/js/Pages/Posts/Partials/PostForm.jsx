@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError';
 import TextareaInput from '@/Components/TextareaInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from "@headlessui/react";
+import MediaLibrary from "@/Components/MediaLibrary";
 
 export function PostForm(props) {
   const form = useRef();
@@ -30,6 +31,11 @@ export function PostForm(props) {
       <div className="mb-0">
         <InputLabel htmlFor="description" value="Description" />
         <TextareaInput id="description" className="mt-1 block w-full" value={data.description} onChange={e => setData('description', e.target.value)} required />
+        <InputError className="mt-2" message={errors.description} />
+      </div>
+      <div className="mb-0">
+        <InputLabel htmlFor="image" value="Image" />
+        <MediaLibrary />
         <InputError className="mt-2" message={errors.description} />
       </div>
     </div>

@@ -28,14 +28,16 @@ class RolePermissionSeeder extends Seeder
     {
 
         $roles = ['Administrator', 'Editor'];
-        $userPostPermissions = ['view-post', 'create-post', 'edit-post', 'delete-post'];
-        $allPostPermissions = ['view-others-post', 'edit-others-post', 'delete-others-post'];
-        $userPermissions = ['view-user', 'create-user', 'edit-user', 'delete-user'];
+        $rolesPermissions = ['view-roles', 'create-roles', 'edit-roles', 'delete-roles'];
+        $permissionsPermissions = ['view-permissions', 'create-permissions', 'edit-permissions', 'delete-permissions'];
+        $userPostPermissions = ['view-posts', 'create-posts', 'edit-posts', 'delete-posts'];
+        $allPostPermissions = ['view-others-posts', 'edit-others-posts', 'delete-others-posts'];
+        $userPermissions = ['view-users', 'create-users', 'edit-users', 'delete-users'];
 
         foreach ($roles as $role) {
             switch ($role) {
                 case 'Administrator':
-                    $permissions = array_merge($userPostPermissions, $allPostPermissions, $userPermissions);
+                    $permissions = array_merge($rolesPermissions, $permissionsPermissions, $userPostPermissions, $allPostPermissions, $userPermissions);
                     break;
 
                 case 'Editor':

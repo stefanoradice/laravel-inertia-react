@@ -2,7 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -30,11 +34,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $roles = $request->user() ? $request->user()->roles : null;
+        $permissions =  $roles && array_unique(Arr::pluck(Arr::collapse(Role::whereIn('roles.id', $roles->pluck('id'))->with('permissions')->get()->pluck('permissions')->toArray()), 'name'));
+
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
-                'roles' => $request->user() ? $request->user()->roles->pluck('name') : '',
-                'permissions' => ['create-permission']
+                'roles' => $roles ? $roles->pluck('name') : '',
+                'permissions' => $permissions
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

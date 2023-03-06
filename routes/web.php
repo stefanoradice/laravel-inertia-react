@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Models\Role;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -34,14 +35,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'user.admin'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->withoutMiddleware('user.admin');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update')->withoutMiddleware('user.admin');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')->withoutMiddleware('user.admin');
 
     Route::resource('/users', UserController::class);
 
     Route::resource('/posts', PostController::class)->withoutMiddleware('user.admin');
+    Route::resource('/permissions', PermissionController::class);
 });
-Route::resource('/permissions', PermissionController::class);
 
 require __DIR__ . '/auth.php';

@@ -28,10 +28,6 @@ const PermissionTable = (props) => {
     })(pagination);
   }, [pagination]);
 
-  useEffect(() => {
-    console.log(permissions)
-  }, []);
-
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {!isLoading && isError ? (
