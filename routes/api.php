@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Resources\MediaResource;
 use App\Http\Resources\PermissionResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
+use App\Models\Media;
 use App\Models\Permission;
 use App\Models\Post;
 use App\Models\User;
@@ -33,5 +35,8 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::get('permissions', function ($paginate = 10) {
         return PermissionResource::collection(Permission::latest()->paginate(Request::get('paginate') ?: $paginate));
+    });
+    Route::get('media', function ($paginate = 10) {
+        return MediaResource::collection(Media::latest()->paginate(Request::get('paginate') ?: $paginate));
     });
 });
